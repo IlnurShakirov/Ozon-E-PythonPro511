@@ -1,5 +1,8 @@
+import Header from '@components/UI/Header'
+
+
 function App() {
-  return null
+  return <Header/>
 }
 
 export default App;
