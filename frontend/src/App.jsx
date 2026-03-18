@@ -4,6 +4,7 @@ import Footer from '@components/UI/Footer/Footer';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [showFooter, setShowFooter] = useState(true)
 
 useEffect(
     () => {
@@ -26,7 +27,8 @@ useEffect(
       </main>
 
       {/* Передаем copyright, который ждет Footer */}
-      <Footer copyright="© 2026 Alias Team. Все права защищены." />
+      {showFooter && <Footer copyright="© 2026 Alias Team. Все права защищены." />}
+      <button onClick={() => setShowFooter(!showFooter)}>{showFooter ? "Скрыть" : "Показать"} Footer</button>
     </>
   );
 }
