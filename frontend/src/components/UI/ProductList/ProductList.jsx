@@ -1,35 +1,63 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
+  const [items, setItems] = useState([])
+  const [itemsLoading, setItemsLoading] = useState(true)
+  const [itemsError, setItemsError] = useState(null) 
 
   useEffect(() => {
-    fetch('http://localhost:3000/products')
-      .then(res => res.json())
-      .then(data => {
-        console.log("Данные получены:", data); // Проверка в консоли
-        setProducts(data);
+    axios.get(`${API_URL}/items`)
+      .then(response => {
+        setItems(response.data)
+        setItemsLoading(false)
       })
-      .catch(err => console.error("Ошибка запроса:", err));
-  }, []);
+      .catch(error => {
+        console.error("Ошибка при получении данных:", error)
+        setItemsLoading(false)
+
+        const errMsg = 
+          error.message === "Network Error" ? "Ошибка сети" :
+          error.response?.status === 404 ? "Ресурс не найден" : 
+          "Повторите попытку позже"
+        
+        setItemsError(`Ошибка загрузки вещей: ${errMsg}`)
+      })
+  }, [])
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Наши товары:</h2>
-      {products.length === 0 ? <p>Загрузка или список пуст...</p> : (
-        products.map(item => (
-          <div key={item.id} style={{ border: '1px solid #ccc', marginBottom: '10px', padding: '10px' }}>
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-            <b>{item.isAvailable ? "В наличии" : "Под заказ"}</b>
-          </div>
-        ))
-      )}
-    </div>
-  );
-};
+      <h1>Список вещей</h1>
+      
+      {/* 3. Выводим ошибку, если она есть */}
+      {itemsError && <div style={{ color: 'red', marginBottom: '10px' }}>{itemsError}</div>}
 
-export default ProductList;
+      <ul>
+        {
+          itemsLoading ? (
+            <div>Загрузка вещей...</div>
+          ) : (
+            
+            !itemsError && items.length > 0 ? (
+              items.map(item => (
+                <li key={item.id} style={{ marginBottom: '8px' }}>
+                  <strong>{item.name}</strong>: {item.description} — {item.isAvailable ? "✅ В наличии" : "❌ Нет в наличии"}
+                </li>
+              ))
+            ) : (
+              !itemsError && <div>Список пуст</div>
+            )
+          )
+        }
+      </ul>
+    </div>
+  )
+}
+
+export default ProductList
+
 
 
 
