@@ -37,7 +37,9 @@ const ProductList = () => {
       <ul>
         {
           itemsLoading ? (
-            <div>Загрузка вещей...</div>
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Загрузка вещей...</span>
+            </div>
           ) : (
             
             !itemsError && items.length > 0 ? (
