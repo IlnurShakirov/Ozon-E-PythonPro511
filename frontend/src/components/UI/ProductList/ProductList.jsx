@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { BsTrash3Fill } from 'react-icons/bs'
+import { FaEdit } from "react-icons/fa"
+
+import styles from './ProductList.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -31,7 +35,6 @@ const ProductList = () => {
     <div style={{ padding: '20px' }}>
       <h1>Список вещей</h1>
       
-      {/* 3. Выводим ошибку, если она есть */}
       {itemsError && <div style={{ color: 'red', marginBottom: '10px' }}>{itemsError}</div>}
 
       <ul>
@@ -45,6 +48,18 @@ const ProductList = () => {
             !itemsError && items.length > 0 ? (
               items.map(item => (
                 <li key={item.id} style={{ marginBottom: '8px' }}>
+                  <BsTrash3Fill 
+                     title="Удалить"
+                     className={styles.deleteIcon} 
+                     size={15}
+                     color="red"
+                  />
+                  <FaEdit 
+                    title="Редактировать"
+                    className={styles.editIcon} 
+                    size={15}
+                    color="black"
+                  />
                   <strong>{item.name}</strong>: {item.description} — {item.isAvailable ? "✅ В наличии" : "❌ Нет в наличии"}
                 </li>
               ))
