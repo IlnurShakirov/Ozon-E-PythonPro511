@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import styles from './AddProduct.module.css'
 
-const AddProduct = () => {
+const AddProduct = ({ onAdd}) => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isAvailable, setIsAvailable] = useState(false)
@@ -28,11 +28,12 @@ const AddProduct = () => {
                 <label htmlFor='isAvailable'>В наличии?</label>
             </div>
 
-            <button type='button' onClick={()=> {
-                console.log("name -", name)
-                console.log("description -", description)
-                console.log("isAvailable -", isAvailable)
-            }}>Добавить</button>
+            <button 
+                type='button' 
+                onClick={() => onAdd({ name, description, isAvailable})}
+            >
+                Добавить
+            </button>
         </form>
     )
 }

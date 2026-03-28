@@ -9,17 +9,12 @@ import styles from './App.module.css'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-
 function App() {
-  // items = [
-  //   {id: "1", name: "Xiaomi Redmi 10", description: "Топ за свои деньги!", isAvailable: true},
-  //   {id: "2", name: "Iphone X", description: "Крутой телефон (нет) и дорогой (да)", isAvailable: false}
-  // ]
   const [items, setItems] = useState([])
   const [itemsLoading, setItemsLoading] = useState(true)
   const [itemsError, setItemsError] = useState(null)
 
- useEffect(() => {
+  useEffect(() => {
     axios.get(`${API_URL}/items`)
       .then(response => {
         setItems(response.data)
@@ -38,6 +33,12 @@ function App() {
       })
   }, [])
 
+const addProduct = (newProduct) => {
+  newProduct.id = String(items.length + 1)
+  setItems([...items, newProduct])
+  axios.post(`${API_URL}/items`, newProduct) 
+  }
+
   return (
     <div>
       <Header />
@@ -50,14 +51,14 @@ function App() {
         />
       </main>  
       <aside className={styles.aside}>
-        <AddProduct />
+        <AddProduct onAdd={addProduct} />
       </aside>
     </div>
   );
-}
-
+} 
 
 export default App
+
 
 
 
