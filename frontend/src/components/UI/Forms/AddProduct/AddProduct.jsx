@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 import styles from './AddProduct.module.css'
 
@@ -7,17 +7,18 @@ const AddProduct = ({ onAdd}) => {
     const [description, setDescription] = useState("")
     const [isAvailable, setIsAvailable] = useState(false)
 
+    // Создаем ref для формы
+    const itemCreatForm = useRef(null)
+
     return (
-        <form className={styles.form}>
+        <form className={styles.form} ref={itemCreatForm}>
             <input
                 type="text"
-                value={name}
                 placeholder='Название'
                 onChange={e => setName(e.target.value)}
             />
             <textarea
                 placeholder='Описание'
-                value={description}
                 onChange={e => setDescription(e.target.value)}
             ></textarea>
 
@@ -25,7 +26,6 @@ const AddProduct = ({ onAdd}) => {
                 <input
                     type='checkbox'
                     id='isAvailable'
-                    checked={isAvailable}
                     onChange={e => setIsAvailable(e.target.checked)}
                 />
                 <label htmlFor='isAvailable'>В наличии?</label>
@@ -35,11 +35,9 @@ const AddProduct = ({ onAdd}) => {
                 type='button' 
                 onClick={() => {
                     onAdd({ name, description, isAvailable})
-                    
-                    // Сбрасываем состояния
-                    setName("")
-                    setDescription("")
-                    setIsAvailable(false)
+
+                    // Сбрасываем поля формы
+                    itemCreatForm.current.reset()
                 }}
             >
                 Добавить
