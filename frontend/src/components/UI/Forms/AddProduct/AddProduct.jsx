@@ -11,11 +11,13 @@ const AddProduct = ({ onAdd}) => {
         <form className={styles.form}>
             <input
                 type="text"
+                value={name}
                 placeholder='Название'
                 onChange={e => setName(e.target.value)}
             />
             <textarea
                 placeholder='Описание'
+                value={description}
                 onChange={e => setDescription(e.target.value)}
             ></textarea>
 
@@ -23,6 +25,7 @@ const AddProduct = ({ onAdd}) => {
                 <input
                     type='checkbox'
                     id='isAvailable'
+                    checked={isAvailable}
                     onChange={e => setIsAvailable(e.target.checked)}
                 />
                 <label htmlFor='isAvailable'>В наличии?</label>
@@ -30,7 +33,14 @@ const AddProduct = ({ onAdd}) => {
 
             <button 
                 type='button' 
-                onClick={() => onAdd({ name, description, isAvailable})}
+                onClick={() => {
+                    onAdd({ name, description, isAvailable})
+                    
+                    // Сбрасываем состояния
+                    setName("")
+                    setDescription("")
+                    setIsAvailable(false)
+                }}
             >
                 Добавить
             </button>
