@@ -8,25 +8,25 @@ const AddProduct = ({ onAdd}) => {
     const [isAvailable, setIsAvailable] = useState(false)
 
     // Создаем ref для формы
-    const itemCreatForm = useRef(null)
+    const itemAddForm = useRef(null)
 
     return (
-        <form className={styles.form} ref={itemCreatForm}>
+        <form className={styles.form} ref={itemAddForm}>
             <input
-                type="text"
+                type="text"                
+                name="name"
                 placeholder='Название'
-                onChange={e => setName(e.target.value)}
             />
             <textarea
+                name="description"
                 placeholder='Описание'
-                onChange={e => setDescription(e.target.value)}
             ></textarea>
 
             <div>
                 <input
                     type='checkbox'
+                    name="isAvailable"
                     id='isAvailable'
-                    onChange={e => setIsAvailable(e.target.checked)}
                 />
                 <label htmlFor='isAvailable'>В наличии?</label>
             </div>
@@ -34,10 +34,10 @@ const AddProduct = ({ onAdd}) => {
             <button 
                 type='button' 
                 onClick={() => {
-                    onAdd({ name, description, isAvailable})
+                    onAdd( Object.fromEntries(new FormData(itemAddForm.current)))
 
                     // Сбрасываем поля формы
-                    itemCreatForm.current.reset()
+                    itemAddForm.current.reset()
                 }}
             >
                 Добавить
