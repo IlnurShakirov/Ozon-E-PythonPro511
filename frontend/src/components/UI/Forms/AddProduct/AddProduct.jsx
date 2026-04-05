@@ -8,6 +8,17 @@ const AddProduct = ({ onAdd}) => {
     // Создаем ref для формы
     const itemAddForm = useRef(null)
 
+   const handleSubmit = () => {
+        const form = itemAddForm.current
+
+        const newItem = Object.fromEntries(new FormData(form))
+        newItem.isAvailable = newItem.isAvailable === "on" // Можно так: newItem.isAvailable ? true : false
+        onAdd(newItem)
+
+        // Сбрасываем поля формы
+        form.reset()
+    }
+
     return (
         <form className={styles.form} ref={itemAddForm}>
             <input
@@ -31,16 +42,7 @@ const AddProduct = ({ onAdd}) => {
 
             <button 
                 type='button' 
-                onClick={() => {
-                    const form = itemAddForm.current
-
-                    const newItem = Object.fromEntries(new FormData(form))
-                    newItem.isAvailable = newItem.isAvailable === "on" // Можно так: newItem.isAvailable ? true : false
-                    onAdd(newItem)
-
-                    // Сбрасываем поля формы
-                    form.reset()
-                }}
+                onClick={handleSubmit}
             >
                 Добавить
             </button>
