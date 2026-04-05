@@ -3,9 +3,7 @@ import { useState, useRef } from 'react'
 import styles from './AddProduct.module.css'
 
 const AddProduct = ({ onAdd}) => {
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [isAvailable, setIsAvailable] = useState(false)
+    
 
     // Создаем ref для формы
     const itemAddForm = useRef(null)
@@ -34,10 +32,14 @@ const AddProduct = ({ onAdd}) => {
             <button 
                 type='button' 
                 onClick={() => {
-                    onAdd( Object.fromEntries(new FormData(itemAddForm.current)))
+                    const form = itemAddForm.current
+
+                    const newItem = Object.fromEntries(new FormData(form))
+                    newItem.isAvailable = newItem.isAvailable === "on" // Можно так: newItem.isAvailable ? true : false
+                    onAdd(newItem)
 
                     // Сбрасываем поля формы
-                    itemAddForm.current.reset()
+                    form.reset()
                 }}
             >
                 Добавить
