@@ -1,4 +1,4 @@
-import ProductCard from `@components/UI/ProductCard`
+import ProductCard from '../ProductCard/ProductCard'
 
 
 const ProductList = ({ items, itemsLoading, itemsError, onDelete}) => {
@@ -18,7 +18,7 @@ const ProductList = ({ items, itemsLoading, itemsError, onDelete}) => {
             
             !itemsError && items.length > 0 ? (
               items.map(item => (
-                   <ProductCard key={item.id} item={item} onDelete />         
+                   <ProductCard key={item.id} item={item} onDelete={onDelete} />         
               ))
             ) : (
               !itemsError && <div>Список пуст</div>

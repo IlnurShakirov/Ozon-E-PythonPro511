@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import AddProduct from './components/UI/Forms/AddProduct';
 import Header from './components/UI/Header'; 
-import ProductList from './components/UI/ProductList';
+import ProductList from './components/UI/ProductList/ProductList';
 
 import styles from './App.module.css'
 
@@ -42,10 +42,15 @@ function App() {
       .catch(err => console.error("Ошибка загрузки настроек сайта:", err))
   }, [])
 
-  const addProduct = (newProduct) => {
-    newProduct.id = String(items.length + 1)
+   const addProduct = (newProduct) => {
+    newProduct.id = String(items.length+1)
     setItems([...items, newProduct])
-    axios.post(`${API_URL}/items`, newProduct) 
+    axios.post(`${API_URL}/items`, newProduct)
+  }
+
+  const deleteItem = (id) => {
+    setItems(items.filter(item => item.id != id))
+    axios.delete(`${API_URL}/items/${id}`)
   }
 
   // Динамический стиль для фона
@@ -68,6 +73,7 @@ function App() {
           items={items} 
           itemsLoading={itemsLoading} 
           itemsError={itemsError}
+          onDelete={deleteItem}
         />
       </main>  
       <aside className={styles.aside}>
