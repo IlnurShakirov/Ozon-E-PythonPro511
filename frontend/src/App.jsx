@@ -47,11 +47,25 @@ function App() {
     setItems([...items, newProduct])
     axios.post(`${API_URL}/items`, newProduct)
   }
-
-  const deleteItem = (id) => {
-    setItems(items.filter(item => item.id != id))
-    axios.delete(`${API_URL}/items/${id}`)
-  }
+  
+  const deleteItem = async (id) => {
+    try {
+      const response = await axios.delete(`${API_URL}/items/${id}`)
+      setItems(items.filter(item => item.id != id))
+    }
+    catch (error) {
+      alert('Ошибка: ${error.message}')
+    }
+  }  
+  //  const deleteItem = (id) => {
+  //   axios.delete(`${API_URL}/items/${id}`)
+  //    .then(response => {
+  //      setItems(items.filter(item => item.id !==id))
+  //    })
+  //    .catch(error =>{
+  //      alert("СЕРВЕР УПАЛ")
+  //    })
+  // }
 
   // Динамический стиль для фона
   const backgroundStyle = siteData?.background 
